@@ -2,12 +2,9 @@
 
 namespace App\Console;
 
-use App\Console\Commands\ItemSync;
-use App\Console\Commands\BankFinder;
-use App\Console\Commands\ScrapeBanks;
+use App\Console\Commands\FindBanks;
 use App\Console\Commands\GeocodeBank;
-use App\Console\Commands\SyncBankItems;
-use App\Console\Commands\GetBankLocation;
+use App\Console\Commands\FetchItems;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -19,12 +16,9 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        BankFinder::class,
         GeocodeBank::class,
-        GetBankLocation::class,
-        ItemSync::class,
-        ScrapeBanks::class,
-        SyncBankItems::class,
+        FindBanks::class,
+        FetchItems::class,
     ];
 
     /**

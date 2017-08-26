@@ -8,14 +8,14 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\DomCrawler\Crawler;
 
-class ScrapeBanks extends Command
+class FindBanks extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'banks:scrape';
+    protected $signature = 'banks:find';
 
     /**
      * The console command description.
@@ -45,11 +45,12 @@ class ScrapeBanks extends Command
         $crawler->filterXPath('//li')->each(function ($b) {
             $dom = new Crawler($b->html());
             $url = $dom->filterXPath('//a//@href')->first()->text();
+            $slug = trim($domain = explode('/', $url)[5]);
             Bank::firstOrCreate([
                 'name' => ucwords($dom->filter('h4')->first()->text()),
-                'slug' => trim($domain = explode('/', $url)[5]),
+                'slug' => $slug,
                 'address' => trim($dom->filterXPath('//div[@class="location__address"]')->first()->text()),
-                'url' => $url,
+                'url' => "https://$slug.foodbank.org.uk/give-help/donate-food/",
             ]);
         });
     }
