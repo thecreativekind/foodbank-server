@@ -20,12 +20,12 @@ class CreateBanksTable extends Migration
             $table->text('products')->nullable();
             $table->string('url');
             $table->string('address')->nullable();
-            $table->text('add1')->nullable();
-            $table->text('add2')->nullable();
-            $table->text('add3')->nullable();
-            $table->text('town')->nullable();
-            $table->text('county')->nullable();
-            $table->text('postcode')->nullable();
+            $table->string('add1')->nullable();
+            $table->string('add2')->nullable();
+            $table->string('add3')->nullable();
+            $table->string('town')->nullable();
+            $table->string('county')->nullable();
+            $table->string('postcode')->nullable();
             $table->timestamps();
         });
     }

@@ -9,13 +9,20 @@ use App\Http\Controllers\Controller;
 
 class BankController extends Controller
 {
+    /**
+     * @var
+     */
     protected $bankId;
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
     public function index(Request $request)
     {
-        $bank = Bank::whereName($request->name)->get();
+        $bank = Bank::where('name', 'LIKE', "%$request->name%")->get();
 
-        if ($bank->count() > 0) {
+        if ($bank->count() == 0) {
             $status = 200;
             $data = ['data' => $bank->first()];
             $this->bankId = $bank->first()->id;
