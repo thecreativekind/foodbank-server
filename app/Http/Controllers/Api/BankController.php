@@ -20,20 +20,27 @@ class BankController extends Controller
      */
     public function index(Request $request)
     {
-        $bank = Bank::where('name', 'LIKE', "%$request->name%")->get();
+        $banks = Bank::where('name', 'LIKE', "%$request->name%")
+                     ->orWhere('town', 'LIKE', "%$request->name%")
+                     ->get();
 
-        if ($bank->count() == 0) {
+        if ($banks->count() == 1) {
             $status = 200;
-            $data = ['data' => $bank->first()];
-            $this->bankId = $bank->first()->id;
+            $data = ['data' => $banks->first()];
+            $this->bankId = $banks->first()->id;
+        } elseif ($banks->count() > 1) {
+            $status = 200;
+            $data = ['data' => $banks];
         } else {
             $status = 400;
-            $data = ['errors' => [
-                'status' => 400,
-                'source' => ['pointer' => $request->name],
-                'title' => 'Foodbank unknown',
-                'detail' => 'The foodbank you requested is not registered with this service.'
-            ]];
+            $data = [
+                'errors' => [
+                    'status' => 400,
+                    'source' => ['pointer' => $request->name],
+                    'title' => 'Foodbank unknown',
+                    'detail' => 'The foodbank you requested is not registered with this service.',
+                ],
+            ];
         }
 
         dispatch(new LogSkillRequest($this->bankId, $request->all()));
