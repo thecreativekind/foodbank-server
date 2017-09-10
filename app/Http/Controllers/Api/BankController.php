@@ -20,6 +20,8 @@ class BankController extends Controller
      */
     public function index(Request $request)
     {
+        \Log::info($request->name);
+
         $banks = Bank::where('name', 'LIKE', "%$request->name%")
                      ->orWhere('town', 'LIKE', "%$request->name%")
                      ->get();
