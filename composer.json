@@ -9,6 +9,7 @@
         "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
+        "pda/pheanstalk": "^3.1",
         "symfony/dom-crawler": "^3.3"
     },
     "require-dev": {
