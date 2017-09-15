@@ -55,7 +55,7 @@ class FetchItems extends Command
                 }
             } catch (ConnectException $e) {
                 $this->error("Could not find information for $bank->name");
-            } catch (\InvalidArgumentException $e) {
+            } catch (\Exception $e) {
                 $this->error("Could not process items for $bank->name $bank->url");
             }
         });
