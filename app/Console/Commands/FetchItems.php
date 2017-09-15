@@ -6,6 +6,7 @@ use App\Bank;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 use Symfony\Component\DomCrawler\Crawler;
+use GuzzleHttp\Exception\ConnectException;
 
 class FetchItems extends Command
 {
@@ -47,9 +48,15 @@ class FetchItems extends Command
         Bank::all()->each(function ($bank) {
             try {
                 $this->line($bank->name);
-                $bank->update(['products' => $this->shoppingList($bank)]);
-            } catch (\Exception $e) {
+                $bank->products = $this->shoppingList($bank);
+                if ($bank->isDirty()) {
+                    $this->info('New products found');
+                    $bank->save();
+                }
+            } catch (ConnectException $e) {
                 $this->error("Could not find information for $bank->name");
+            } catch (\InvalidArgumentException $e) {
+                $this->error("Could not process items for $bank->name $bank->url");
             }
         });
     }
