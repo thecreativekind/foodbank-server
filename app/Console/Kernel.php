@@ -8,6 +8,7 @@ use App\Console\Commands\FetchItems;
 use App\Console\Commands\GeocodeBank;
 use App\Console\Commands\SkillReminder;
 use Illuminate\Console\Scheduling\Schedule;
+use App\Console\Commands\FindSocialHandles;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
@@ -20,6 +21,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         GeocodeBank::class,
         FindBanks::class,
+        FindSocialHandles::class,
         FetchItems::class,
         SkillReminder::class,
         Tweet::class,
