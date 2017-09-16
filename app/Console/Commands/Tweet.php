@@ -41,7 +41,8 @@ class Tweet extends Command
     {
         $towns = ['Manchester', 'London', 'Birmingham', 'Bristol', 'Edinburgh', 'Glasgow', 'Liverpool', 'Nottingham', 'Sheffield'];
         $bank = Bank::whereNotNull('products')->whereIn('town', $towns)->get()->random();
-        $items = collect(json_decode($bank->products))->random();
-        \Twitter::postTweet(['status' => "$bank->name urgently needs $items #$bank->town"]);
+        $items = strtolower(collect(json_decode($bank->products))->random());
+        $name = $bank->twitter && $bank->twitter != 'TrussellTrust' ? "@$bank->twitter": $bank->name;
+        \Twitter::postTweet(['status' => "$name urgently need $items #$bank->town"]);
     }
 }

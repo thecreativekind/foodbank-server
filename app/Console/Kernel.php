@@ -36,8 +36,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('banks:items')->daily();
-        $schedule->command('tweet:items')->hourly();
-        $schedule->command('tweet:items')->weekly()->sundays()->at('19:23');
+        $schedule->command('tweet:items')->hourlyAt('7')->between('7:00', '22:00');
+        $schedule->command('tweet:reminder')->weekly()->sundays()->at('19:23');
     }
 
     /**

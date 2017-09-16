@@ -75,7 +75,7 @@ class FindSocialHandles extends Command
         $dom = new Crawler($this->html($bank));
 
         return [
-            str_replace('https://twitter.com/', '', $dom->filterXPath("//a[contains(@href, 'twitter')]/@href")->first()->text()),
+            str_replace(['https://twitter.com/', '@', '.'], '', $dom->filterXPath("//a[contains(@href, 'twitter')]/@href")->first()->text()),
             str_replace('https://www.facebook.com/', '', $dom->filterXPath("//a[contains(@href, 'facebook')]/@href")->first()->text()),
         ];
     }
