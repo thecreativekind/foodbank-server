@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Bank;
-use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;

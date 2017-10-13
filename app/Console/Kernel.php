@@ -7,6 +7,7 @@ use App\Console\Commands\FindBanks;
 use App\Console\Commands\FetchItems;
 use App\Console\Commands\GeocodeBank;
 use App\Console\Commands\SkillReminder;
+use App\Console\Commands\TwitterFollow;
 use Illuminate\Console\Scheduling\Schedule;
 use App\Console\Commands\FindSocialHandles;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -25,12 +26,13 @@ class Kernel extends ConsoleKernel
         FetchItems::class,
         SkillReminder::class,
         Tweet::class,
+        TwitterFollow::class,
     ];
 
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @param  \Illuminate\Console\Scheduling\Schedule $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)

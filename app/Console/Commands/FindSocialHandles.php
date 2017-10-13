@@ -4,9 +4,9 @@ namespace App\Console\Commands;
 
 use App\Bank;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ConnectException;
 use Illuminate\Console\Command;
 use Symfony\Component\DomCrawler\Crawler;
+use GuzzleHttp\Exception\ConnectException;
 
 class FindSocialHandles extends Command
 {

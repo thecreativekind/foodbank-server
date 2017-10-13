@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-
 use App\Bank;
+use Illuminate\Console\Command;
+use Thujohn\Twitter\Facades\Twitter;
 
 class Tweet extends Command
 {
@@ -43,6 +43,6 @@ class Tweet extends Command
         $bank = Bank::whereNotNull('products')->whereIn('town', $towns)->get()->random();
         $items = strtolower(collect(json_decode($bank->products))->random());
         $name = $bank->twitter && $bank->twitter != 'TrussellTrust' ? "@$bank->twitter": $bank->name;
-        \Twitter::postTweet(['status' => "$name urgently need $items #$bank->town"]);
+        Twitter::postTweet(['status' => "$name urgently need $items #$bank->town"]);
     }
 }

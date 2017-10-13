@@ -2,24 +2,25 @@
 
 namespace App\Console\Commands;
 
+use App\Bank;
 use Illuminate\Console\Command;
 use Thujohn\Twitter\Facades\Twitter;
 
-class SkillReminder extends Command
+class TwitterFollow extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'tweet:reminder';
+    protected $signature = 'twitter:follow';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Tweet a reminder about the Alexa Skill';
+    protected $description = 'Auto follows all food banks';
 
     /**
      * Create a new command instance.
@@ -38,6 +39,14 @@ class SkillReminder extends Command
      */
     public function handle()
     {
-        Twitter::postTweet(['status' => "Have an @amazonecho? You can now install the Help My Foodbank #alexa skill to find out what your local foodbank urgently need."]);
+        // Twitter::postFollow(['screen_name' => 'bencarter78']);
+        // dd( 'done' );
+        Bank::whereNotNull('twitter')->get()->unique('twitter')->each(function ($b) {
+            try {
+                Twitter::postFollow(['screen_name' => $b->twitter]);
+            } catch (\Exception $e) {
+                $this->error('Could not follow ' . $b->name);
+            }
+        });
     }
 }
