@@ -6,6 +6,7 @@ use App\Bank;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class GeocodeBank extends Command
 {
@@ -57,19 +58,17 @@ class GeocodeBank extends Command
     public function handle()
     {
         try {
-            //            $banks = Bank::whereNull('latitude')->get();
-            $banks = Bank::all();
-            $banks->each(function ($bank) {
+            Bank::whereNull('latitude')->get()->each(function ($bank) {
                 $this->line($bank->name);
                 $this->requestGeocode($bank);
-                //                var_dump( $this->result );
                 if ($this->result) {
                     $bank->update($this->address());
                     $this->result = null;
                 }
             });
         } catch (\Exception $e) {
-            dd($e->getMessage());
+            $this->error($e->getMessage());
+            Log::error($e->getMessage());
         }
     }
 
@@ -78,6 +77,9 @@ class GeocodeBank extends Command
      */
     private function requestGeocode($bank)
     {
+        $res = $this->client->get($this->baseUrl . $bank->address . '+uk&key=' . env('GOOGLE_GEOCODING_API_KEY'));
+        $res = json_decode($res->getBody()->getContents());
+        dd($res);
         if ( ! Cache::has("geocode.$bank->slug")) {
             $res = $this->client->get($this->baseUrl . $bank->address . '+uk&key=' . env('GOOGLE_GEOCODING_API_KEY'));
             $res = json_decode($res->getBody()->getContents());
