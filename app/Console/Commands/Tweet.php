@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Bank;
+use App\Tweet as Model;
 use Illuminate\Console\Command;
 use Thujohn\Twitter\Facades\Twitter;
 use Waavi\UrlShortener\UrlShortener;
@@ -69,6 +70,7 @@ class Tweet extends Command
     public function handle()
     {
         Twitter::postTweet(['status' => $this->getStatus()]);
+        Model::create(['status' => $this->getStatus()]);
     }
 
     /**
