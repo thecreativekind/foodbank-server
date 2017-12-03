@@ -83,7 +83,7 @@ class Tweet extends Command
         return trim(implode(' ', [
             $this->getBankName(),
             'urgently need',
-            $this->getIRandomItem(),
+            $this->getItemsString(),
             '#' . $this->bank->town,
             '#foodbanks',
             $this->shortener->driver('google')->shorten($this->bank->url),
@@ -125,8 +125,14 @@ class Tweet extends Command
     /**
      * @return string
      */
-    private function getIRandomItem()
+    private function getItemsString()
     {
+        $items = collect(json_decode($this->bank->products))->implode(', ');
+
+        if (strlen($items) <= 180) {
+            return $items;
+        }
+
         return strtolower(collect(json_decode($this->bank->products))->random());
     }
 
