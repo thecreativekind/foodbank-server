@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-use App\Console\Commands\Tweet;
+use App\Console\Commands\PostTweet;
 use App\Console\Commands\FindBanks;
 use App\Console\Commands\FetchItems;
 use App\Console\Commands\GeocodeBank;
@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
         FindSocialHandles::class,
         FetchItems::class,
         SkillReminder::class,
-        Tweet::class,
+        PostTweet::class,
         TwitterFollow::class,
     ];
 
@@ -38,7 +38,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('banks:items')->daily();
-        $schedule->command('tweet:items')->everyThirtyMinutes()->between('7:00', '22:00');
+//        $schedule->command('tweet:items')->everyThirtyMinutes()->between('7:00', '22:00');
         $schedule->command('tweet:reminder')->weekly()->sundays()->at('19:23');
     }
 

@@ -24,8 +24,6 @@ class TwitterFollow extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -39,8 +37,6 @@ class TwitterFollow extends Command
      */
     public function handle()
     {
-        // Twitter::postFollow(['screen_name' => 'bencarter78']);
-        // dd( 'done' );
         Bank::whereNotNull('twitter')->get()->unique('twitter')->each(function ($b) {
             try {
                 Twitter::postFollow(['screen_name' => $b->twitter]);

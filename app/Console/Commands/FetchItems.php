@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Bank;
+use App\Product;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 use Symfony\Component\DomCrawler\Crawler;
@@ -48,16 +49,27 @@ class FetchItems extends Command
         Bank::all()->each(function ($bank) {
             try {
                 $this->line($bank->name);
-                $bank->products = $this->shoppingList($bank);
-                if ($bank->isDirty()) {
-                    $this->info('New products found');
-                    $bank->save();
-                }
+                $products = $this->createProducts($this->shoppingList($bank));
+                $bank->products()->sync($products->pluck('id'));
             } catch (ConnectException $e) {
                 $this->error("Could not find information for $bank->name");
             } catch (\Exception $e) {
                 $this->error("Could not process items for $bank->name $bank->url");
             }
+        });
+    }
+
+    /**
+     * @param $items
+     * @return \Illuminate\Support\Collection
+     */
+    private function createProducts($items)
+    {
+        return tap(collect(), function ($products) use ($items) {
+            $items->each(function ($item) use ($products) {
+                $item = str_replace(['*', '.'], '', $item);
+                $products->push(Product::firstOrCreate(['name' => ucwords(trim($item))]));
+            });
         });
     }
 
@@ -89,6 +101,6 @@ class FetchItems extends Command
      */
     public function cleansed($items)
     {
-        return json_encode(array_map('trim', explode("\n", trim($items))));
+        return collect(array_map('trim', explode("\n", trim($items))));
     }
 }

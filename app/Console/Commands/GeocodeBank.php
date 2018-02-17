@@ -5,8 +5,8 @@ namespace App\Console\Commands;
 use App\Bank;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 
 class GeocodeBank extends Command
 {
@@ -77,9 +77,6 @@ class GeocodeBank extends Command
      */
     private function requestGeocode($bank)
     {
-        $res = $this->client->get($this->baseUrl . $bank->address . '+uk&key=' . env('GOOGLE_GEOCODING_API_KEY'));
-        $res = json_decode($res->getBody()->getContents());
-        dd($res);
         if ( ! Cache::has("geocode.$bank->slug")) {
             $res = $this->client->get($this->baseUrl . $bank->address . '+uk&key=' . env('GOOGLE_GEOCODING_API_KEY'));
             $res = json_decode($res->getBody()->getContents());

@@ -25,8 +25,6 @@ class FindBanks extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -40,14 +38,12 @@ class FindBanks extends Command
      */
     public function handle()
     {
-        $crawler = new Crawler(Storage::get('banks.html'));
-        $crawler->filterXPath('//li')->each(function ($b) {
+        (new Crawler(Storage::get('banks.html')))->filterXPath('//li')->each(function ($b) {
             $dom = new Crawler($b->html());
             $url = $dom->filterXPath('//a//@href')->first()->text();
-            $slug = trim($domain = explode('/', $url)[5]);
-            Bank::firstOrCreate([
+            $slug = trim(explode('/', $url)[5]);
+            Bank::withTrashed()->firstOrCreate(['slug' => $slug], [
                 'name' => $this->cleanName($dom->filter('h4')->first()->text()),
-                'slug' => $slug,
                 'address' => trim($dom->filterXPath('//div[@class="location__address"]')->first()->text()),
                 'url' => "https://$slug.foodbank.org.uk/give-help/donate-food/",
             ]);
