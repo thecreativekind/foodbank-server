@@ -20,7 +20,7 @@ class BankController extends Controller
      */
     public function index(Request $request)
     {
-        $banks = Bank::where('name', 'LIKE', "%$request->name%")
+        $banks = Bank::with('products')->where('name', 'LIKE', "%$request->name%")
                      ->orWhere('town', 'LIKE', "%$request->name%")
                      ->get();
 

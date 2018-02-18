@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\MostNeedItemTweet;
 use App\Console\Commands\PostTweet;
 use App\Console\Commands\FindBanks;
 use App\Console\Commands\FetchItems;
@@ -25,6 +26,7 @@ class Kernel extends ConsoleKernel
         FindSocialHandles::class,
         FetchItems::class,
         SkillReminder::class,
+        MostNeedItemTweet::class,
         PostTweet::class,
         TwitterFollow::class,
     ];
